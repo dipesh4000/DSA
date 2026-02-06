@@ -1,25 +1,29 @@
+import java.util.*;
+
 class Solution {
-    public int greater(int j, int[] nums){
-        for(int i = j + 1; i < nums.length; i++){
-            if(nums[i] > nums[j]){
-                return nums[i];
-            }
-        }
-        return -1;
-    }
-
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        int m = nums1.length;
-        int n = nums2.length;
-        int[] ans = new int[m];
+        Stack<Integer> stack = new Stack<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
 
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
-                if(nums1[i] == nums2[j]){
-                    ans[i] = greater(j, nums2);
-                }
+        // Step 1: Process nums2
+        for (int num : nums2) {
+            while (!stack.isEmpty() && num > stack.peek()) {
+                map.put(stack.pop(), num);
             }
+            stack.push(num);
         }
+
+        // Step 2: Remaining elements have no greater
+        while (!stack.isEmpty()) {
+            map.put(stack.pop(), -1);
+        }
+
+        // Step 3: Build answer for nums1
+        int[] ans = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            ans[i] = map.get(nums1[i]);
+        }
+
         return ans;
     }
 }
