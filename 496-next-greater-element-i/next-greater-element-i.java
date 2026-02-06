@@ -1,29 +1,19 @@
-import java.util.*;
-
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        Stack<Integer> stack = new Stack<>();
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> ng = new HashMap<>();
+        Deque<Integer> st = new ArrayDeque<>();
 
-        // Step 1: Process nums2
         for (int num : nums2) {
-            while (!stack.isEmpty() && num > stack.peek()) {
-                map.put(stack.pop(), num);
+            while (!st.isEmpty() && st.peek() < num) {
+                ng.put(st.pop(), num);
             }
-            stack.push(num);
+            st.push(num);
         }
 
-        // Step 2: Remaining elements have no greater
-        while (!stack.isEmpty()) {
-            map.put(stack.pop(), -1);
-        }
-
-        // Step 3: Build answer for nums1
-        int[] ans = new int[nums1.length];
+        int[] res = new int[nums1.length];
         for (int i = 0; i < nums1.length; i++) {
-            ans[i] = map.get(nums1[i]);
+            res[i] = ng.getOrDefault(nums1[i], -1);
         }
-
-        return ans;
+        return res;        
     }
 }
