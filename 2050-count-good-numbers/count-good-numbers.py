@@ -1,3 +1,8 @@
 class Solution:
     def countGoodNumbers(self, n: int) -> int:
-        return pow(5, (n+1)//2, 10**9+7) * pow(4, n//2, 10**9+7) %(10**9+7)
+        MOD=10**9+7
+
+        even=(n+1)//2
+        odd=n//2
+
+        return (pow(5, even, MOD) * pow(4, odd, MOD)) % MOD
