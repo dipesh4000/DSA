@@ -11,5 +11,5 @@ class Solution:
                 backtrack(openN,closeN + 1, s + ")")
             if(openN < n):
                 backtrack(openN + 1,closeN, s + "(")
-        backtrack(1, 0, "(")
+        backtrack(0, 0, "")
         return ans
