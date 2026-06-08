@@ -11,3 +11,10 @@ class Solution:
             else:
                 pivota.append(n)
         return smaller_pivot + pivota + greator_pivot
+        # greator_pivot = []
+        # smaller_pivot = []
+        # pivota = []
+        # i= j= 0
+        # while(j < len(nums)):
+
+        # return smaller_pivot + pivota + greator_pivot
