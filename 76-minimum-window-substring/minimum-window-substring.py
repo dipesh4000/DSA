@@ -1,0 +1,83 @@
+class Solution:
+
+    def minWindow(self, s: str, t: str) -> str:
+        if not s or not t or len(s) < len(t):
+            return ""
+
+        # Dictionary to keep a count of all the unique characters in t.
+        dict_t = {}
+        for char in t:
+            dict_t[char] = dict_t.get(char, 0) + 1
+
+        # Number of unique characters in t that need to be present in the window.
+        required = len(dict_t)
+
+        # Left and Right pointer
+        l, r = 0, 0
+
+        # formed is used to keep track of how many unique characters in t
+        # are present in the current window in its desired frequency.
+        formed = 0
+
+        # Dictionary which keeps a count of all the unique characters in the current window.
+        window_counts = {}
+
+        # ans tuple of the form (window length, left, right)
+        ans = float("inf"), None, None
+
+        while r < len(s):
+            # Add one character from the right to the window
+            char = s[r]
+            window_counts[char] = window_counts.get(char, 0) + 1
+
+            # If the frequency of the current character added equals to the
+            # desired count in t, then increment the formed count by 1.
+            if char in dict_t and window_counts[char] == dict_t[char]:
+                formed += 1
+
+            # Try and contract the window till the point where it ceases to be 'desirable'.
+            while l <= r and formed == required:
+                char = s[l]
+
+                # Save the smallest window until now.
+                if r - l + 1 < ans[0]:
+                    ans = (r - l + 1, l, r)
+
+                # The character at the position pointed by the `left` pointer is no longer a part of the window.
+                window_counts[char] -= 1
+                if char in dict_t and window_counts[char] < dict_t[char]:
+                    formed -= 1
+
+                # Move the left pointer ahead, this helps to look for a new window.
+                l += 1
+
+            # Keep expanding the window once we are done contracting.
+            r += 1
+
+        return "" if ans[0] == float("inf") else s[ans[1] : ans[2] + 1]
+# class Solution:
+#     def minWindow(self, s: str, t: str) -> str:
+#         if not t or len(t) > len(s):
+#             return ""
+#         track = {}
+#         tracksum = 0
+#         for tr in t:
+#             track[t] = track.get(track[t], 0) + 1
+#             tracksum += 1
+#         minwin = ""
+#         made = False
+#         i = 0
+#         for j in range(len(s)):
+#             if s[j] in track:
+#                 track[s[j]] -= 1
+#                 tracksum -= 1
+#             while tracksum < 0:
+#                 if s[i] in track:
+#                     track[s[i]] += 1
+#                     tracksum += 1
+#             if tracksum == 0:
+#                 if made:
+#                     minwin = s[i:j + 1] if j - i + 1 < len(minwin) else minwin
+#                 else:
+#                     minwin = s[i:j + 1]
+#         return minwin
