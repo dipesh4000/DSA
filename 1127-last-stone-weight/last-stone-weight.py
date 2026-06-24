@@ -4,10 +4,10 @@ class Solution:
         heapq.heapify(maxHeap)
 
         while len(maxHeap) > 1:
-            y = -1 * heapq.heappop(maxHeap)
-            x = -1 * heapq.heappop(maxHeap)
+            y = heapq.heappop(maxHeap)
+            x = heapq.heappop(maxHeap)
             if x != y:
-                heapq.heappush(maxHeap, -1 * (y - x))
+                heapq.heappush(maxHeap, (y - x))
 
         if len(maxHeap) < 1:
             return 0
